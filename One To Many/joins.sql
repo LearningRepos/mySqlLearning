@@ -17,7 +17,7 @@ create table orders(
     foreign key (customer_id) references customers(id)
 );
 
--- inserts valid data into customers
+-- inserts valid data into customers table
 INSERT INTO customers (first_name, last_name, email)
 VALUES ('Boy', 'George', 'george@gmail.com'),
        ('George', 'Michael', 'gm@gmail.com'),
