@@ -9,6 +9,7 @@
   "author": "Mihir Achyuta",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "faker": "^4.1.0",
     "mysql": "^2.18.1"
   }
