@@ -1,11 +1,18 @@
 var faker = require("faker");
 var mysql = require('mysql');
+let ejs = require('ejs');
+var bodyParser = require('body-parser')
 const express = require('express');
-const app = express();
 
-app.listen(3000, function(req,res){
+//sets view engine to ejs
+const app = express();
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
+
+app.listen(3000, function(){
   console.log("Connected on port 3000");
-})
+});
 
 // console.log(faker.address.city());
 //remember when connecting to mysql database to remember your root password and create an existing database beforehand
@@ -17,8 +24,30 @@ var connection = mysql.createConnection({
 });
 
 app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+  var count;
+  //selects values with query
+  var selectQuery = "select count(*) from users as count";
+  connection.query(selectQuery,function (error,results,fields) {
+      if(error) throw error;
+      count = results[0]["count(*)"];
+      res.render("index", {count,count});
+  });
+});
+
+app.post("/registered", function(req,res){
+  //console.log(req.body.email)
+  var insertQuery = "insert into users (email) values ?";
+  var values = [[req.body.email]]
+  connection.query(insertQuery,[values], function(error,results,fields){
+    if(error) throw error;
+    //console.log("Inserted Email");
+  });
+  res.redirect("/");
+});
+
+app.get("/joke", function(req,res){
+  res.send("The real joker is the one that's reading this !");
+});
 
 //connects to database
 connection.connect(function(err) {
@@ -27,7 +56,7 @@ connection.connect(function(err) {
         console.error('error connecting: ' + err.stack);
         return;
     }
-    console.log('connected to mysql datbase' + connection.database);
+    console.log('connected to mysql database');
 });
 
 // testQuery = "select curdate() as date, curtime() as time";
@@ -56,12 +85,3 @@ connection.connect(function(err) {
 //         console.log("Inserted");
 //     })
 // }
-
-
-
-//selects values with query
-var selectQuery = "select count(*) from users";
-connection.query(selectQuery,function (error,results,fields) {
-    if(error) throw error;
-    console.log(results);
-});

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Join Us</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h1>JOIN US</h1>
+  <p class="flex-container">Enter your email to join <strong><%= count %></strong>
+    others on our waitlist. We are 100% not a cult. </p>
+  <form method="POST" action='/registered'>
+    <input type="text" class="form" placeholder="Enter Your Email" name = "email">
+    <button>Join Now</button>
+  </form>
+</body>
+
+</html>
